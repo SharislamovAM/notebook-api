@@ -1,0 +1,18 @@
+#!/bin/bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+. $SCRIPT_DIR/settings.sh || {
+  echo "no settings" && exit 1
+}
+
+export WEB_GID=33
+
+perms() {
+  sudo chown -R $UID:$WEB_GID "$1"
+  find "$1" -type d -exec chmod g+rwx '{}' \;
+  find "$1" -type f -exec chmod g+rw '{}' \;
+}
+
+perms "$SCRIPT_DIR/../storage"
+perms "$SCRIPT_DIR/../themes"
+perms "$SCRIPT_DIR/../plugins"
