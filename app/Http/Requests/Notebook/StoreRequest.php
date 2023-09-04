@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Notebook;
 
-use HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -21,12 +19,12 @@ class StoreRequest extends FormRequest
     public static function rules(): array
     {
         return [
-            'full_name' => 'required|string',
-            'company' => 'string',
-            'phone' => 'required|string',
-            'email' => 'required|string',
-            'birthday' => 'string',
-            'photo' => 'string',
+            "full_name" => "required|string",
+            "company" => "nullable|string",
+            "phone" => "required|string",
+            "email" => "required|email",
+            "birthday" => "nullable|date",
+            "photo" => "nullable|string"
         ];
     }
 }

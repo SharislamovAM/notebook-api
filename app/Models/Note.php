@@ -2,14 +2,8 @@
 
 namespace App\Models;
 
-use App\Exceptions\InvalidParamsException;
-use App\Exceptions\NotFoundException;
-use App\Http\Requests\Notebook\StoreRequest;
-use App\Http\Requests\Notebook\UpdateRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 
 class Note extends Model

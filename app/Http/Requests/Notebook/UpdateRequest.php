@@ -21,15 +21,15 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array
+    public static function rules(): array
     {
         return [
-            'full_name' => 'required|string',
-            'companies' => 'string',
-            'phone' => 'required|string',
-            'email' => 'required|string|email',
-            'birthday' => 'date',
-            'photo' => 'string',
+            "full_name" => "required|string",
+            "company" => "nullable|string",
+            "phone" => "required|string",
+            "email" => "required|email",
+            "birthday" => "nullable|date",
+            "photo" => "nullable|string"
         ];
     }
 }

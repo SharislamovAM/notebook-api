@@ -38,7 +38,8 @@ class NotebookController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
-            $this->add($request->all());
+            $data = $this->validateRequest($request, StoreRequest::rules());
+            Note::create($data);
             return response()->json([
                 'data' => 'Запись добавлена'
             ], 201);
@@ -78,11 +79,11 @@ class NotebookController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
         try {
             $note = Note::findOrFail($id);
-            $data = $this->validateUpdate($request->all());
+            $data = $this->validateRequest($request, UpdateRequest::rules());
             $note->update($data);
             return response()->json([
                 'data' => 'Запись обновлена'
@@ -126,25 +127,17 @@ class NotebookController extends Controller
     }
 
     /**
+     * @param $request
+     * @param $rules
+     * @param $messages
+     * @param $customAttributes
+     * @return array
      * @throws InvalidParamsException
      * @throws ValidationException
      */
-    public function add($request)
+    public function validateRequest($request, $rules, $messages = [], $customAttributes = []): array
     {
-        $validator = Validator::make($request, StoreRequest::rules());
-        if ($validator->fails()) {
-            throw new InvalidParamsException();
-        }
-        return Note::create($validator->validated());
-    }
-
-    /**
-     * @throws InvalidParamsException
-     * @throws ValidationException
-     */
-    public function validateUpdate($request): array
-    {
-        $validator = Validator::make($request, UpdateRequest::rules());
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             throw new InvalidParamsException();
         }
