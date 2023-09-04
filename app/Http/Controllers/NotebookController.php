@@ -22,7 +22,7 @@ class NotebookController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $note = Note::filter(Note::all())->paginate(10);
+            $note = Note::filter()->paginate(10);
             return response()->json($note);
         } catch (\Exception $e) {
             return response()->json([
