@@ -16,6 +16,8 @@ use Illuminate\Validation\ValidationException;
 class NotebookController extends Controller
 {
 
+    protected $errors = [];
+
     /**
      * @return JsonResponse
      */
@@ -45,11 +47,12 @@ class NotebookController extends Controller
             ], 201);
         } catch (InvalidParamsException $e) {
             return response()->json([
-                'data' => 'Неверные значения параметров'
+                'data' => 'Неверные значения параметров',
+                'messages' => $this->errors,
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'data' => 'Ошибка добавления записи'
+                'data' => 'Ошибка добавления записи',
             ], 400);
         }
     }
@@ -90,7 +93,8 @@ class NotebookController extends Controller
             ]);
         } catch (InvalidParamsException $e) {
             return response()->json([
-                'data' => 'Неверные значения параметров'
+                'data' => 'Неверные значения параметров',
+                'messages' => $this->errors,
             ], 422);
         } catch (NotFoundException $e) {
             return response()->json([
@@ -126,6 +130,7 @@ class NotebookController extends Controller
         }
     }
 
+
     /**
      * @param $request
      * @param $rules
@@ -139,6 +144,7 @@ class NotebookController extends Controller
     {
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
+            $this->errors = $validator->errors()->all();
             throw new InvalidParamsException();
         }
         return $validator->validated();
